@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <PackageId>CoreFlux.BalenaCloudAPI</PackageId>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <Authors>Rhys Evans</Authors>
     <Company>CoreFlux</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
