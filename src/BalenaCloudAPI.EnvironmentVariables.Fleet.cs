@@ -31,11 +31,11 @@ namespace BalenaSDK
             }
             return null;
         }
-        public dynamic ClearApplicationVariable(int deviceId, string name)
+        public bool ClearApplicationVariable(int deviceId, string name)
         {
             return SetDeviceVariable(deviceId,name,"");
         }
-        public dynamic SetApplicationVariable(int applicationId, string name, string value)
+        public bool SetApplicationVariable(int applicationId, string name, string value)
         {
             string id;
             try
@@ -56,7 +56,14 @@ namespace BalenaSDK
                 Console.WriteLine($"Creating new key {name}={value}");
                 using (HttpResponseMessage res = API_HTTPCLIENT.PostAsJsonAsync($"{ApplicationEndpoint}", ht).GetAwaiter().GetResult())
                 {
-                    return res.StatusCode;
+                    if(res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.Created)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             else
@@ -69,13 +76,20 @@ namespace BalenaSDK
 
                 using (HttpResponseMessage res = API_HTTPCLIENT.PatchAsync($"{ApplicationEndpoint}({id})", httpContent).GetAwaiter().GetResult())
                 {
-                    return res.StatusCode;
+                    if (res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.Created)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
-            return null;
+            
         }
         
-        public HttpStatusCode DeleteApplicationVariable(int applicationId, string name)
+        public bool DeleteApplicationVariable(int applicationId, string name)
         {
 
             string id;
@@ -85,12 +99,19 @@ namespace BalenaSDK
                 id = GetApplicationVariable(applicationId, name).id;
                 using (HttpResponseMessage res = API_HTTPCLIENT.DeleteAsync($"{ApplicationEndpoint}({id})").GetAwaiter().GetResult())
                 {
-                    return res.StatusCode;
+                    if (res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.Created)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             catch
             {
-                return HttpStatusCode.NotFound;
+                return false;
             }
 
         }

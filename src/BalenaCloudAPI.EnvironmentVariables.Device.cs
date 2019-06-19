@@ -31,11 +31,11 @@ namespace BalenaSDK
             }
             return null;
         }
-        public dynamic ClearDeviceVariable(int deviceId, string name)
+        public bool ClearDeviceVariable(int deviceId, string name)
         {
             return SetDeviceVariable(deviceId,name,"");
         }
-        public dynamic SetDeviceVariable(int deviceId, string name, string value)
+        public bool SetDeviceVariable(int deviceId, string name, string value)
         {
             string id;
             try
@@ -56,7 +56,14 @@ namespace BalenaSDK
                 Console.WriteLine($"Creating new key {name}={value}");
                 using (HttpResponseMessage res = API_HTTPCLIENT.PostAsJsonAsync($"{DeviceEndpoint}", ht).GetAwaiter().GetResult())
                 {
-                    return res.StatusCode;
+                    if (res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.Created)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             else
@@ -69,13 +76,19 @@ namespace BalenaSDK
 
                 using (HttpResponseMessage res = API_HTTPCLIENT.PatchAsync($"{DeviceEndpoint}({id})", httpContent).GetAwaiter().GetResult())
                 {
-                    return res.StatusCode;
+                    if (res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.Created)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
-            return null;
         }
         
-        public HttpStatusCode DeleteDeviceVariable(int deviceId, string name)
+        public bool DeleteDeviceVariable(int deviceId, string name)
         {
 
             string id;
@@ -85,12 +98,19 @@ namespace BalenaSDK
                 id = GetDeviceVariable(deviceId, name).id;
                 using (HttpResponseMessage res = API_HTTPCLIENT.DeleteAsync($"{DeviceEndpoint}({id})").GetAwaiter().GetResult())
                 {
-                    return res.StatusCode;
+                    if (res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.Created)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             catch
             {
-                return HttpStatusCode.NotFound;
+                return false;
             }
 
         }
