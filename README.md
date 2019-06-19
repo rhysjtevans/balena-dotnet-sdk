@@ -2,7 +2,6 @@
 Very simple static class that can be used to call against Balena API.
 
 
-
 I quickly put this together to be able to change environment variables from the project I'm working on. As Balena doesn't have any C# Dotnet Core examples I thought I'd quickly share this, hopefully helping others get up and running quicker and not fall in to some of the issues I faced.
 
 ## Contributing back
@@ -13,6 +12,8 @@ The goal of the project I'm working on is to be able to get/set environment vari
 If I have to hit other endpoints, I'll abstract methods out as best as possible making it easier to extend in the future.
 
 If your contributions can align with above, that would be great!
+### Nuget Package
+I'm working on an automated pipeline to publish to nuget.org. If anyone has any experience of this, please feel free to get in touch!
 
 ## Getting Started Example
 ```
